@@ -61,7 +61,7 @@
                                     'petitionId': row.petitionId,
                                     'title': row.title,
                                     'category': row.category,
-                                    'authorName': row.country,
+                                    'authorName': row.authorName,
                                     'signatureCount': row.signatureCount,
                                     'image': reader.result
                                 });
@@ -72,7 +72,7 @@
                                 'petitionId': row.petitionId,
                                 'title': row.title,
                                 'category': row.category,
-                                'authorName': row.country,
+                                'authorName': row.authorName,
                                 'signatureCount': row.signatureCount
                             });
                         });
