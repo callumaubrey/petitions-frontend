@@ -154,7 +154,7 @@
                 .then((res) => {
                     this.categories.push({ value: null, text: 'Filter by category' });
                     for (var i = 0; i < res.data.length; i++) {
-                        this.categories.push({ value: res.data[0].categoryId, text: res.data[0].name });
+                        this.categories.push({ value: res.data[i].categoryId, text: res.data[i].name });
                     }
                 })
                 .catch(err => alert(err));

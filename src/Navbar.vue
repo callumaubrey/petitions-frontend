@@ -36,7 +36,7 @@
         </div>
         <b-alert v-if="form.error" show variant="warning" style="margin-top:10px;"> {{ form.error }}</b-alert>
         <div v-if="showRegisterForm">
-            <b-form @submit.stop.prevent="submitRegister()">
+            <b-form @submit.stop.prevent="submitRegister()" @reset.stop.prevent="onReset">
                 <b-form-group id="email-input-group" label="Email" label-for="email-input">
                     <b-form-input
                         id="email-input"
@@ -108,7 +108,8 @@
 
                     <b-form-invalid-feedback id="image-live-feedback">Image must be a JPEG, PNG or GIF.</b-form-invalid-feedback>
                 </b-form-group>
-                <b-button type="submit" variant="primary" style="width:100%;">Register</b-button>
+                <b-button type="submit" variant="primary" style="width:60%;float:left;">Register</b-button>
+                <b-button type="reset" variant="danger" style="width:30%;float:right;">Reset</b-button>
             </b-form>
         </div>
         <div v-else>
@@ -268,6 +269,15 @@
                     return;
                 }
                 this.register();
+            },
+            onReset() {
+                this.registerForm.name = null;
+                this.registerForm.email = null;
+                this.registerForm.password = null;
+                this.registerForm.city = null;
+                this.registerForm.country = null;
+                this.registerForm.image = null;
+                this.$v.$reset();
             },
             register() {
                 let registerData = {
