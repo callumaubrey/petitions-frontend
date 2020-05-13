@@ -74,7 +74,7 @@
                                     </b-nav-item>
                                     <b-nav-item>
                                         <network network="twitter">
-                                            <i class="fa fa-twitter"></i> Tweet to yor followers
+                                            <i class="fa fa-twitter"></i> Tweet to your followers
                                         </network>
                                     </b-nav-item>
                                 </b-nav>
