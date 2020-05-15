@@ -17,6 +17,7 @@
                 <!-- EDIT PROFILE -->
                 <b-alert v-if="this.success" variant="success" show>{{ this.success }}</b-alert>
                 <b-alert v-if="this.error" variant="danger" show>{{ this.error }}</b-alert>
+                <b-alert v-if="this.warning" variant="warning" show>{{ this.warning }}</b-alert>
                 <b-button to="/my-profile" style="margin-bottom:7px;">View Profile</b-button>
                 <b-form @submit.stop.prevent="onSubmit">
                     <b-form-group id="name-input-group" label="Name" label-for="name-input">
@@ -119,9 +120,11 @@
             return {
                 user: null,
                 form: null,
+                dbEmail: null,
                 userImage: null,
                 success: null,
-                error: null
+                error: null,
+                warning: null
             }
         },
         validations: {
@@ -165,6 +168,7 @@
                 .then((res) => {
                     this.user = res.data;
                     this.form = res.data;
+                    this.dbEmail = res.data.email;
                     this.form.password = null;
                     this.$getUserImage(userId, (data) => {
                         this.userImage = data;
@@ -200,7 +204,11 @@
                     this.success = 'Saved';
                 })
                 .catch(err => {
-                    this.error = 'No data has changed or email is already in use';
+                    if (this.dbEmail == this.form.email) {
+                        this.success = 'No data changed';
+                    } else {
+                        this.warning = 'Email is already in use';
+                    }
                 });
 
                 if (this.form.image) {
@@ -211,9 +219,11 @@
                         }
                     })
                     .then((res) => {
-                        this.success = 'Saved';
+                        this.success = 'Saved Image';
                     })
-                    .catch(err => console.log(err));
+                    .catch((err) => {
+                        this.error = 'Failed to save image';
+                    });
                 }
             }
         }
