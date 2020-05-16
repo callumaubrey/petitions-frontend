@@ -173,6 +173,7 @@
                         let date = new Date(res.data.closingDate);
                         let now = new Date();
                         if (date < now) {
+                            // Has already closed
                             this.$router.push('/');
                         }
                         this.form.closingDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString().split("T")[0];
