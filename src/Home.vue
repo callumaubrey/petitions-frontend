@@ -141,9 +141,13 @@
             getCategories() {
                 this.axios.get('http://localhost:4941/api/v1/petitions/categories')
                 .then((res) => {
-                    this.categories.push({ value: null, text: 'Filter by category' });
-                    for (var i = 0; i < res.data.length; i++) {
-                        this.categories.push({ value: res.data[i].categoryId, text: res.data[i].name });
+                    if (res.data.length == 0) {
+                        this.categories.push({ value: null, text: 'No categories available' });
+                    } else {
+                        this.categories.push({ value: null, text: 'Filter by category' });
+                        for (var i = 0; i < res.data.length; i++) {
+                            this.categories.push({ value: res.data[i].categoryId, text: res.data[i].name });
+                        }
                     }
                 })
                 .catch(err => alert(err));

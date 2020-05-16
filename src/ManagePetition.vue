@@ -43,6 +43,7 @@
                 }
             },
             getUserPetitions() {
+                this.petitions = [];
                 let authorId = this.$getLoggedInUserId();
                 this.axios.get('http://localhost:4941/api/v1/petitions', {
                     params: {
@@ -51,29 +52,17 @@
                 })
                 .then((res) => {
                     for (var i = 0; i < res.data.length; i++) {
-                        let row = res.data[i];
-                        this.axios.get('http://localhost:4941/api/v1/petitions/' + row.petitionId + '/photo', { responseType: 'blob' })
-                        .then((res2) => {
-                            let reader = new FileReader();
-                            reader.readAsDataURL(res2.data);
-                            reader.onload = () => {
-                                this.petitions.push({
-                                    'petitionId': row.petitionId,
-                                    'title': row.title,
-                                    'category': row.category,
-                                    'authorName': row.authorName,
-                                    'signatureCount': row.signatureCount,
-                                    'image': reader.result
-                                });
-                            }
-                        })
-                        .catch(err2 => {
-                            this.petitions.push({
-                                'petitionId': row.petitionId,
-                                'title': row.title,
-                                'category': row.category,
-                                'authorName': row.authorName,
-                                'signatureCount': row.signatureCount
+                        this.petitions.push({
+                            'petitionId': res.data[i].petitionId,
+                            'title': res.data[i].title,
+                            'category': res.data[i].category,
+                            'authorName': res.data[i].authorName,
+                            'signatureCount': res.data[i].signatureCount,
+                            'image': null
+                        });
+                        this.petitions.map(row => {
+                            this.$getPetitionImage(row.petitionId, (image) => {
+                                row.image = image;
                             });
                         });
                     }

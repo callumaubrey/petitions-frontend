@@ -181,12 +181,16 @@
 
                     this.axios.get('http://localhost:4941/api/v1/petitions/categories')
                     .then((res2) => {
-                        this.categories.push({ value: null, text: 'Please select a category' });
-                        for (var i = 0; i < res2.data.length; i++) {
-                            if (res.data.category == res2.data[i].name) {
-                                this.form.selectedCategory = res2.data[i].categoryId;
+                        if (res2.data.length == 0) {
+                            this.categories.push({ value: null, text: 'No categories available' });
+                        } else {
+                            this.categories.push({ value: null, text: 'Please select a category' });
+                            for (var i = 0; i < res2.data.length; i++) {
+                                if (res.data.category == res2.data[i].name) {
+                                    this.form.selectedCategory = res2.data[i].categoryId;
+                                }
+                                this.categories.push({ value: res2.data[i].categoryId, text: res2.data[i].name });
                             }
-                            this.categories.push({ value: res2.data[i].categoryId, text: res2.data[i].name });
                         }
                     })
                     .catch(err2 => alert(err2));
@@ -230,17 +234,17 @@
                             }
                         })
                         .then((res2) => {
-                            this.$router.go(0);
+                            this.success = 'Saved image';
                         })
                         .catch((err2) => {
-                            alert(err2);
+                            this.error = 'Failed saving image';
                         });
                     } else {
-                        this.$router.go(0);
+                        this.success = 'Saved';
                     }
                 })
                 .catch((err) => {
-                    alert(err);
+                    this.error = 'Failed saving data';
                 });
             }
         }
