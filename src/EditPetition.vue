@@ -61,7 +61,7 @@
                     </b-form-group>
 
                     <b-form-group id="image-input-group" label="Change Image" label-for="image-input">
-                        <p><b-avatar :src="petitionImage" size="72px"></b-avatar></p>
+                        <p><b-avatar :src="'http://localhost:4941/api/v1/petitions/' + this.$route.params.id + '/photo'" size="72px"></b-avatar></p>
                         <b-form-file
                             id="image-input"
                             name="image-input"
@@ -103,7 +103,6 @@
                     selectedCategory: null
                 },
                 categories: [],
-                petitionImage: null,
                 success: null,
                 error: null,
                 validPetition: true
@@ -154,11 +153,6 @@
                 if (!id) {
                     this.validPetition = false;
                 }
-
-                // Get Petition Image
-                this.$getPetitionImage(id, (petitionImage) => {
-                    this.petitionImage = petitionImage;
-                });
 
                 this.axios.get('http://localhost:4941/api/v1/petitions/' + id)
                 .then((res) => {

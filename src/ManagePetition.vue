@@ -8,7 +8,7 @@
                 @row-clicked="goToPetition"
             >
                 <template v-slot:cell(title)="data">
-                    <b-avatar :src="data.item.image"></b-avatar> {{ data.item.title }}
+                    <b-avatar :src="'http://localhost:4941/api/v1/petitions/' + data.item.petitionId + '/photo'"></b-avatar> {{ data.item.title }}
                 </template>
             </b-table>
         </b-container>
@@ -43,7 +43,6 @@
                 }
             },
             getUserPetitions() {
-                this.petitions = [];
                 let authorId = this.$getLoggedInUserId();
                 this.axios.get('http://localhost:4941/api/v1/petitions', {
                     params: {
@@ -51,21 +50,7 @@
                     }
                 })
                 .then((res) => {
-                    for (var i = 0; i < res.data.length; i++) {
-                        this.petitions.push({
-                            'petitionId': res.data[i].petitionId,
-                            'title': res.data[i].title,
-                            'category': res.data[i].category,
-                            'authorName': res.data[i].authorName,
-                            'signatureCount': res.data[i].signatureCount,
-                            'image': null
-                        });
-                        this.petitions.map(row => {
-                            this.$getPetitionImage(row.petitionId, (image) => {
-                                row.image = image;
-                            });
-                        });
-                    }
+                    this.petitions = res.data;
                 })
                 .catch((err) => alert(err));
             },

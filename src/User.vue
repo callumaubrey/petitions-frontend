@@ -4,7 +4,7 @@
 
         <b-container>
             <div style="text-align:center;">
-                <b-avatar :src="this.userImage"></b-avatar> <h3>{{ user.name }}</h3>
+                <b-avatar :src="'http://localhost:4941/api/v1/users/' + this.$getLoggedInUserId() + '/photo'"></b-avatar> <h3>{{ user.name }}</h3>
             </div>
             <div v-if="currentRouteName == 'ViewProfile'">
                 <!-- VIEW PROFILE -->
@@ -121,7 +121,6 @@
                 user: null,
                 form: null,
                 dbEmail: null,
-                userImage: null,
                 success: null,
                 error: null,
                 warning: null
@@ -170,9 +169,6 @@
                     this.form = res.data;
                     this.dbEmail = res.data.email;
                     this.form.password = null;
-                    this.$getUserImage(userId, (data) => {
-                        this.userImage = data;
-                    })
                 })
                 .catch(err => alert(err));
             },
@@ -184,11 +180,17 @@
 
                 let data = {
                     'name': this.form.name,
-                    'email': this.form.email,
-                    'city': this.form.city,
-                    'country': this.form.country
+                    'email': this.form.email
                 };
 
+                if (this.form.city) {
+                    data['city'] = this.form.city;
+                }
+                if (this.form.country) {
+                    data['country'] = this.form.country;
+                }
+
+                // Only when you change your password, you must enter your old password.
                 if (this.form.password) {
                     data['password'] = this.form.password;
                     data['currentPassword'] = this.form.currentPassword;

@@ -25,7 +25,7 @@
                         @row-clicked="goToPetition"
                     >
                         <template v-slot:cell(title)="data">
-                            <b-avatar :src="data.item.image"></b-avatar> {{ data.item.title }}
+                            <b-avatar :src="'http://localhost:4941/api/v1/petitions/' + data.item.petitionId + '/photo'"></b-avatar> {{ data.item.title }}
                         </template>
                     </b-table>
                 </b-col>
@@ -68,12 +68,12 @@
                 query: '',
                 selectedCategory: null,
                 categories: [],
-                selectedSort: 'SIGNATURES_ASC',
+                selectedSort: 'SIGNATURES_DESC',
                 sortOptions: [
-                    { value: 'ALPHABETICAL_ASC', text: 'Title ASC' },
-                    { value: 'ALPHABETICAL_DESC', text: 'Title DESC' },
-                    { value: 'SIGNATURES_ASC', text: 'Signatures ASC' },
-                    { value: 'SIGNATURES_DESC', text: 'Signatures DESC' }
+                    { value: 'ALPHABETICAL_ASC', text: 'Title A-Z' },
+                    { value: 'ALPHABETICAL_DESC', text: 'Title Z-A' },
+                    { value: 'SIGNATURES_ASC', text: 'Signatures Least to Most' },
+                    { value: 'SIGNATURES_DESC', text: 'Signatures Most to Least' }
                 ],
             }
         },
@@ -83,9 +83,6 @@
         },
         methods: {
             getPetitions() {
-                // Reset data
-                this.data = [];
-
                 let params = {
                     'startIndex': (this.currentPage - 1) * this.limit,
                     'count': this.limit,
@@ -101,21 +98,7 @@
                     params: params
                 })
                 .then((res) => {
-                    for (let i = 0; i < res.data.length; i++) {
-                        this.data.push({
-                            'petitionId': res.data[i].petitionId,
-                            'title': res.data[i].title,
-                            'category': res.data[i].category,
-                            'authorName': res.data[i].authorName,
-                            'signatureCount': res.data[i].signatureCount,
-                            'image': null
-                        });
-                        this.data.map(row => {
-                            this.$getPetitionImage(row.petitionId, (image) => {
-                                row.image = image;
-                            });
-                        });
-                    }
+                    this.data = res.data;
                 })
                 .catch(err => alert(err));
 

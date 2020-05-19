@@ -23,7 +23,13 @@
                         <p>{{ petition.description }}</p>
                     </b-col>
                     <b-col>
-                        <p><b>{{ petition.signatureCount }} have signed.</b> Lets get to {{ signatureCountMax }}!</p>
+                        <p>
+                            <b>
+                            <span v-if="petition.signatureCount">
+                                {{ petition.signatureCount }}
+                            </span>
+                            <span v-else>0</span> have signed.</b> Lets get to {{ signatureCountMax }}!
+                        </p>
                         <b-progress :value="petition.signatureCount" :max="signatureCountMax" class="mb-3"></b-progress>
                         <p v-if="this.$isLoggedIn() && !this.hasSigned && this.closingDateInTheFuture && !this.isAuthor">
                             <b-button @click="sign()">Sign this Petition</b-button>
@@ -87,7 +93,7 @@
                     <b-col>
                         <b-table :items="signatories" :fields="fields">
                             <template v-slot:cell(name)="data">
-                                <b-avatar :src="data.item.image"></b-avatar> {{ data.item.name }}
+                                <b-avatar :src="'http://localhost:4941/api/v1/users/' + data.item.signatoryId + '/photo'"></b-avatar> {{ data.item.name }}
                             </template>
                         </b-table>
                     </b-col>
@@ -151,6 +157,7 @@
                     } else {
                         this.closingDateInTheFuture = true;
                     }
+                    
                     // Get Petition Image
                     this.$getPetitionImage(id, (petitionImage) => {
                         this.petitionImage = petitionImage;
@@ -158,10 +165,7 @@
 
                     // Get Author Image
                     if (authorId) {
-                        this.$getUserImage(authorId, (data) => {
-                            this.authorImage = data;
-                        });
-
+                        this.authorImage = 'http://localhost:4941/api/v1/users/' + authorId + '/photo';
                         if (this.$getLoggedInToken() && authorId == this.$getLoggedInUserId()) {
                             this.isAuthor = true;
                         }
@@ -171,32 +175,11 @@
                     if (res.data.signatureCount > 0) {
                         this.axios.get('http://localhost:4941/api/v1/petitions/' + id + '/signatures')
                         .then((res3) => {
+                            this.signatories = res3.data;
                             for (var i = 0; i < res3.data.length; i++) {
-                                let row = res3.data[i];
                                 if (parseInt(res3.data[i].signatoryId) == parseInt(this.$getLoggedInUserId())) {
                                     this.hasSigned = true;
                                 }
-
-                                this.axios.get('http://localhost:4941/api/v1/users/' + res3.data[i].signatoryId + '/photo', { responseType: 'blob' })
-                                .then((res4) => {
-                                    let reader = new FileReader();
-                                    reader.readAsDataURL(res4.data);
-                                    reader.onload = () => {
-                                        this.signatories.push({
-                                            'name': row.name,
-                                            'city': row.city,
-                                            'country': row.country,
-                                            'image': reader.result
-                                        });
-                                    }
-                                })
-                                .catch(err4 => {
-                                    this.signatories.push({
-                                        'name': row.name,
-                                        'city': row.city,
-                                        'country': row.country
-                                    });
-                                });
                             }
                         })
                         .catch(err3 => alert(err3));

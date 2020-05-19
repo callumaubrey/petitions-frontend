@@ -338,9 +338,7 @@
                     this.axios.get('http://localhost:4941/api/v1/users/' + userId)
                     .then((res) => {
                         this.name = res.data.name;
-                        this.$getUserImage(this.$getLoggedInUserId(), (data) => {
-                            this.userPhoto = data;
-                        });
+                        this.userPhoto = 'http://localhost:4941/api/v1/users/' + this.$getLoggedInUserId() + '/photo';
                     })
                     .catch((err) => {
                         console.log(err);
