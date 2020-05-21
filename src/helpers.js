@@ -13,7 +13,7 @@ const Helpers = {
             return Vue.$cookies.get('UserId');
         };
 
-        /*Vue.prototype.$getUserImage = function (id, callback) {
+        Vue.prototype.$getUserImage = function (id, callback) {
             Vue.axios.get('http://localhost:4941/api/v1/users/' + id + '/photo', { responseType: 'blob' })
             .then((res) => {
                 let reader = new FileReader();
@@ -25,7 +25,7 @@ const Helpers = {
             .catch(err => {
                 callback(false);
             });
-        };*/
+        };
 
         Vue.prototype.$getPetitionImage = function (id, callback) {
             Vue.axios.get('http://localhost:4941/api/v1/petitions/' + id + '/photo', { responseType: 'blob' })
