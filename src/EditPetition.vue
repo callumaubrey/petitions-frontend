@@ -61,7 +61,7 @@
                     </b-form-group>
 
                     <b-form-group id="image-input-group" label="Change Image" label-for="image-input">
-                        <p><b-avatar :src="'http://localhost:4941/api/v1/petitions/' + this.$route.params.id + '/photo'" size="72px"></b-avatar></p>
+                        <p><b-avatar :src="this.petitionImage" size="72px"></b-avatar></p>
                         <b-form-file
                             id="image-input"
                             name="image-input"
@@ -105,7 +105,8 @@
                 categories: [],
                 success: null,
                 error: null,
-                validPetition: true
+                validPetition: true,
+                petitionImage: null
             }
         },
         validations: {
@@ -159,6 +160,12 @@
                     if (parseInt(res.data.authorId) !== parseInt(this.$getLoggedInUserId())) {
                         this.$router.push('/');
                     }
+
+                    this.$getPetitionImage(id, (image) => {
+                        if (image) {
+                            this.petitionImage = image;
+                        }
+                    });
 
                     this.form.title = res.data.title;
                     this.form.description = res.data.description;
@@ -229,6 +236,11 @@
                         })
                         .then((res2) => {
                             this.success = 'Saved image';
+                            this.$getPetitionImage(id, (image) => {
+                                if (image) {
+                                    this.petitionImage = image;
+                                }
+                            })
                         })
                         .catch((err2) => {
                             this.error = 'Failed saving image';

@@ -2,7 +2,7 @@
     <div>
     <b-navbar class="nav-bar" fixed toggleable="lg" style="margin-bottom:10px;border-bottom: 1px solid #dbd9db;">
         <b-container>
-            <b-navbar-brand to='/'>Petitions Site</b-navbar-brand>
+            <b-navbar-brand to='/'>aubreyspetitions</b-navbar-brand>
             <b-navbar-toggle fixed target="nav-collapse" toggleable="true"></b-navbar-toggle>
 
             <b-collapse id="nav-collapse" is-nav>
