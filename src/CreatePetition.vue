@@ -9,7 +9,7 @@
                 <b-alert v-if="this.success" variant="success" show>{{ this.success }}</b-alert>
                 <b-alert v-if="this.error" variant="danger" show>{{ this.error }}</b-alert>
 
-                <b-form @submit.stop.prevent="onSubmit">
+                <b-form @submit.stop.prevent="onSubmit" @reset.stop.prevent="onReset">
                     <b-form-group id="title-input-group" label="Title" label-for="title-input">
                         <b-form-input
                             id="title-input"
@@ -75,6 +75,7 @@
                         <b-form-invalid-feedback id="closing-date-live-feedback">Closing date must be in the future.</b-form-invalid-feedback>
                     </b-form-group>
                     <b-button type="submit" variant="primary">Submit</b-button>
+                    <b-button type="reset" variant="danger">Reset</b-button>
                 </b-form>
             </div>
         </b-container>
@@ -214,6 +215,13 @@
                 .catch((err) => {
                     this.error = err;
                 });
+            },
+            onReset() {
+                this.form.title = null;
+                this.form.selectedCategory = null;
+                this.form.description = null;
+                this.form.closingDate = null;
+                this.$v.$reset();
             }
         }
     }

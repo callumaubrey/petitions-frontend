@@ -32,7 +32,10 @@
         },
         methods: {
             checkAuthorizedAndGetUser() {
-                if (!this.$isLoggedIn()) this.$router.push('/');
+                if (!this.$isLoggedIn()) {
+                    this.$router.push('/login');
+                    return;
+                }
 
                 let userId = this.$getLoggedInUserId();
                 this.axios.get('http://localhost:4941/api/v1/users/' + userId, {

@@ -347,7 +347,6 @@
                 })
                 .catch((err) => {
                     this.passwordForm.error = 'Current password might be incorrect. Failed to save new password.';
-                    alert(err);
                 });
             }
         }

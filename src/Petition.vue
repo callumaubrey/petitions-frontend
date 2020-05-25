@@ -70,17 +70,17 @@
                                 <b-nav vertical>
                                     <b-nav-item>
                                         <network network="email">
-                                            <i class="fa fa-envelope"></i> Send an email to friends
+                                            Send an email to friends
                                         </network>
                                     </b-nav-item>
                                     <b-nav-item>
                                         <network network="facebook">
-                                            <i class="fa fa-facebook"></i> Send a Facebook Message
+                                            Send a Facebook Message
                                         </network>
                                     </b-nav-item>
                                     <b-nav-item>
                                         <network network="twitter">
-                                            <i class="fa fa-twitter"></i> Tweet to your followers
+                                            Tweet to your followers
                                         </network>
                                     </b-nav-item>
                                 </b-nav>
@@ -157,10 +157,12 @@
                     } else {
                         this.closingDateInTheFuture = true;
                     }
-                    
+
                     // Get Petition Image
                     this.$getPetitionImage(id, (petitionImage) => {
-                        this.petitionImage = petitionImage;
+                        if (petitionImage) {
+                            this.petitionImage = petitionImage;
+                        }
                     });
 
                     // Get Author Image
