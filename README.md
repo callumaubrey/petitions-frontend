@@ -1,4 +1,4 @@
-# seng365-assignment02
+# Front end for Petitions Website
 
 > Petitions Client using Vue.js
 
